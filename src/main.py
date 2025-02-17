@@ -6,7 +6,10 @@ from src.data_cleaner import convert_csv_to_parquet
 from src.parquet_handler import merge_parquets
 
 BASE_URL = "https://arquivos.receitafederal.gov.br/dados/cnpj/dados_abertos_cnpj/"
-entitys = [    "Empresas","Estabelecimentos","Cnae","Municipios","Simples"]
+entitys = [    #"Empresas",
+           "Estabelecimentos",
+           #"Cnae","Municipios","Simples"
+           ]
 
 def main():
     #  Identificar diretório mais recente

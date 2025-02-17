@@ -25,8 +25,7 @@ def download_zip_files(zip_urls, save_folder, entity):
 
     zip_entity = pd.DataFrame(zip_urls, columns=["url"])
     zip_entity = zip_entity[(zip_entity["url"].str.contains(entity))]
-    print(zip_entity)
-
+    
     for url in zip_entity["url"]:
         
         filename = url.split("/")[-1]

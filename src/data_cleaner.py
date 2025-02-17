@@ -29,15 +29,24 @@ def convert_csv_to_parquet(folder_path,entity):
     csv_files = [csv for csv in csv_files if not str(csv).endswith(".parquet") ]
 
     for csv in csv_files:
+       parquet_file = Path(f'{csv}'.replace('raw','processed')).with_suffix('.parquet')       
+       parquet_file.parent.mkdir(parents=True, exist_ok=True)       
+
        df = load_csv_files(csv,entity)
-       clean_dataframe(df,entity)
-       parquet_file = csv.with_suffix('.parquet').replace("raw","processed")
+       df = clean_dataframe(df,entity)              
        save_parquet(df,parquet_file)
        
 
 def clean_dataframe(dataframe, entity):
+    if(entity=="Estabelecimentos"):
+         print("Limpando Estabelecimentos só RS e Ativas")
+         filtrado = dataframe[(dataframe["UF"] == "RS")]
+         filtrado = filtrado[(filtrado["Situacao"] == "02")]
+         dataframe = filtrado
+    
     """ Limpa e mantém apenas as colunas desejadas """
     dataframe.drop(inplace=True,columns=columns_to_remove[entity])
+    return dataframe
 
 def load_csv_files(csv,entity):
     """ Carrega os arquivos CSV e retorna DataFrame """ 
@@ -49,6 +58,4 @@ def load_csv_files(csv,entity):
                             )
     return dataframe
 
-def save_parquet(dataframe, output_path):
-    dataframe.to_parquet(output_path, index=False)
     
